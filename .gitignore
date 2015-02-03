@@ -1,2 +1,4 @@
 **/*.pyc
-flash_scrape/data
+data
+*/data
+crawls
