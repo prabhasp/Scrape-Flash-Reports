@@ -1,9 +1,9 @@
 import scrapy
-from flash_scrape.items import District, VDC
+from scrape_flash_reports.items import District, VDC
 
 BASE_URL = 'http://202.70.77.75:8080/flash/schoolreport/reportprebe.php?'
 class DistrictListSpider(scrapy.Spider):
-    name = "VDCLister"
+    name = "vdcs"
     allowed_domains = ["http://202.70.77.75:8080/", "202.70.77.75"]
     start_urls = [BASE_URL + "req=distlist"]
 

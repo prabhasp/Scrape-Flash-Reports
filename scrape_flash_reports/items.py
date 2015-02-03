@@ -19,11 +19,14 @@ class VDC(scrapy.Item):
 
 class School(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
+    code = scrapy.Field()
+    name = scrapy.Field()
     school_type = scrapy.Field()
     school_levels = scrapy.Field()
     district = scrapy.Field()
     vdc = scrapy.Field()
+    zone = scrapy.Field()
+    development_region = scrapy.Field()
     address = scrapy.Field()
     eco_belt = scrapy.Field()
     ward_no = scrapy.Field()
