@@ -62,20 +62,29 @@ class SchoolistSpider(scrapy.Spider):
                 yield scrapy.Request(school_page_url, callback=self.parse_school_page)
                 
     def parse_school_page(self, response):
-        school = School()
-        name_code = response.xpath('/html/body/table/tr/td/table[1]/tr/td[2]/h2/text()').extract()
-        school['name'] = name_code[0].split(': ')[1].strip() # School: School Name
-        school['code'] = name_code[1].split(': ')[1].strip() # Code: 123456789
-        school['development_region'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[2]/td[2]/text()'))
-        school['eco_belt'] =  val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[3]/td[2]/text()'))
-        school['zone'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[5]/td[2]/text()'))
-        school['district'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[5]/td[2]/text()'))
-        school['vdc'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[6]/td[2]/text()'))
-        school['address'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[7]/td[2]/text()'))
-        school['ward_no'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[8]/td[2]/text()'))
-        school['account_no'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[9]/td[2]/text()'))
-        school['locality'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[10]/td[2]/text()'))
-        school['phone'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[11]/td[2]/text()'))
-        school['email'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[12]/td[2]/text()'))
-        school['resource_center'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[13]/td[2]/text()'))
+        with open("scrape_log.txt", "a") as f:
+            try:
+                ## If no data for a school, just write that out and be done
+                if len(response.xpath('/html/body/table')) == 0:
+                    f.write('No data for: ' + response.url + '\n')
+                school = School()
+                name_code = response.xpath('/html/body/table/tr/td/table[1]/tr/td[2]/h2/text()').extract()
+                school['url'] = response.url
+                school['name'] = name_code[0].split(': ')[1].strip() # School: School Name
+                school['code'] = name_code[1].split(': ')[1].strip() # Code: 123456789
+                school['development_region'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[2]/td[2]/text()'))
+                school['eco_belt'] =  val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[3]/td[2]/text()'))
+                school['zone'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[5]/td[2]/text()'))
+                school['district'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[5]/td[2]/text()'))
+                school['vdc'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[6]/td[2]/text()'))
+                school['address'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[7]/td[2]/text()'))
+                school['ward_no'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[8]/td[2]/text()'))
+                school['account_no'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[9]/td[2]/text()'))
+                school['locality'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[10]/td[2]/text()'))
+                school['phone'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[11]/td[2]/text()'))
+                school['email'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[12]/td[2]/text()'))
+                school['resource_center'] = val(response.xpath('/html/body/table/tr/td/table[2]/tr/td[1]/table/tr[13]/td[2]/text()'))
+            except Exception as e:
+                f.write('Error parsing url: '  + response.url + '\n')
+                f.write('Exception: ' + str(e) + '\n')
         yield school
