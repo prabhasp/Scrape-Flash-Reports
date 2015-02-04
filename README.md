@@ -37,4 +37,4 @@ Contributors to this project:
  * Bikram Adhikari (@meadhikari)
  * Sakar Pudasaini (@karkhana)
  * Prabhas Pokharel (@prabhasp)
- * Roshan Rijal (@rrijal35)
+ * Roshan Rijal (@rrijal53)
